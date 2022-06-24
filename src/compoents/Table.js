@@ -1,45 +1,64 @@
 import Box from "@mui/material/Box";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getBooks, selectBooks } from "../redux/librarySlice";
+import { getBooks, selectBooks, selectStatus } from "../redux/librarySlice";
 import DataTable from "react-data-table-component";
 
 function Table() {
   const dispatch = useDispatch();
-  const books = useSelector(selectBooks);
+  const loading = useSelector(selectStatus) === "loading" ? true : false;
+  const books = useSelector(selectBooks).books;
+  const totalRows = useSelector(selectBooks).totalBooks;
 
   const columns = [
     {
-      name: "Title",
+      name: "title",
       selector: (row) => row.title,
     },
     {
-      name: "Year",
-      selector: (row) => row.year,
+      name: "description",
+      selector: (row) => row.description,
+    },
+    {
+      name: "category",
+      selector: (row) => row.category.name,
+    },
+    {
+      name: "author",
+      selector: (row) => row.author,
+    },
+    {
+      name: "publisher",
+      selector: (row) => row.publisher.company,
     },
   ];
 
-  const data = [
-    {
-      id: 1,
-      title: "Beetlejuice",
-      year: "1988",
-    },
-    {
-      id: 2,
-      title: "Ghostbusters",
-      year: "1984",
-    },
-  ];
+  const data = books?.map(
+    ({ title, description, category, author, publisher }) => {
+      return {
+        title,
+        description,
+        category: category,
+        author: `${author.first_name} ${author.last_name}`,
+        publisher: publisher,
+      };
+    }
+  );
 
   useEffect(() => {
     dispatch(getBooks());
   }, [dispatch]);
 
-  console.log(books);
   return (
     <Box sx={{ width: "75%", margin: 0, padding: "auto" }}>
-      <DataTable columns={columns} data={data} />
+      <DataTable
+        columns={columns}
+        data={data}
+        progressPending={loading}
+        pagination
+        paginationServer
+        paginationTotalRows={totalRows}
+      />
     </Box>
   );
 }

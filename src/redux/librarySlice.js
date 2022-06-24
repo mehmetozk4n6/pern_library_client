@@ -3,14 +3,13 @@ import axios from "axios";
 
 export const getBooks = createAsyncThunk("library/getBooks", async () => {
   const res = await axios(`http://localhost:5000/books`);
-  return res.data.data.books;
+  return res.data.data;
 });
 
 export const librarySlice = createSlice({
   name: "library",
   initialState: {
     books: [],
-
     status: "idle",
     error: "",
   },
@@ -31,6 +30,8 @@ export const librarySlice = createSlice({
 });
 
 export const selectBooks = (state) => state.library.books;
+export const selectStatus = (state) => state.library.status;
+export const selectError = (state) => state.library.error;
 
 export const {} = librarySlice.actions;
 

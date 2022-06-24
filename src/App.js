@@ -7,7 +7,7 @@ import { Box } from "@mui/material";
 function App() {
   return (
     <div className="App">
-      <Box sx={{ width: "75%", marginX: "auto", padding: 3 }}>
+      <Box sx={{ width: "90%", marginX: "auto", padding: 3 }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="add" element={<Add />} />
