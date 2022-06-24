@@ -1,49 +1,37 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const fetchCity = createAsyncThunk("weather/fetchCity", async (city) => {
-  let apikey = sessionStorage.getItem("APIkey");
-  const res = await axios(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}`
-  );
-  return res.data;
+export const getBooks = createAsyncThunk("library/getBooks", async () => {
+  const res = await axios(`http://localhost:5000/books`);
+  return res.data.data.books;
 });
 
-export const weatherSlice = createSlice({
-  name: "weather",
+export const librarySlice = createSlice({
+  name: "library",
   initialState: {
-    APIkey: sessionStorage.getItem("APIkey") || "",
-    weatherData: [],
+    books: [],
+
     status: "idle",
     error: "",
   },
-  reducers: {
-    cleanWeatherData: (state, action) => {
-      state.weatherData = "";
-    },
-    cleanErrorMessage: (state, action) => {
-      state.error = "";
-    },
-  },
+  reducers: {},
   extraReducers: {
-    [fetchCity.pending]: (state, action) => {
+    [getBooks.pending]: (state, action) => {
       state.status = "loading";
     },
-    [fetchCity.fulfilled]: (state, action) => {
-      state.weatherData = action.payload;
+    [getBooks.fulfilled]: (state, action) => {
+      state.books = action.payload;
       state.status = "succeeded";
     },
-    [fetchCity.rejected]: (state, action) => {
+    [getBooks.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
     },
   },
 });
 
-export const weatherSelector = (state) => state.weather.weatherData;
-export const statusSelector = (state) => state.weather.status;
-export const errorSelector = (state) => state.weather.error;
+export const selectBooks = (state) => state.library.books;
 
-export const { cleanWeatherData, cleanErrorMessage } = weatherSlice.actions;
+export const {} = librarySlice.actions;
 
-export default weatherSlice.reducer;
+export default librarySlice.reducer;

@@ -1,28 +1,38 @@
-import * as React from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { Input } from "@mui/material";
-import Add_nav from "./Add_nav";
+import AddNav from "./AddNav";
+import Button from "@mui/material/Button";
 
 function Add() {
-  const [age, setAge] = React.useState("");
+  const [book, setBook] = useState("");
+  const [category, setCategory] = useState("");
+  const [author, setAuthor] = useState("");
+  const [publisher, setPublisher] = useState("");
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleSubmit = (event) => {
+    console.log({
+      book,
+      category,
+      author,
+      publisher,
+    });
   };
 
   return (
-    <>
-      <Add_nav />
+    <Box>
+      <AddNav />
       <TextField
         id="standard-basic"
-        label="Standard"
+        label="Book"
         variant="standard"
         sx={{ width: "100%" }}
+        value={book}
+        onChange={(e) => setBook(e.target.value)}
       />
       <Box sx={{ minWidth: 120, marginTop: 3 }}>
         <FormControl fullWidth>
@@ -30,9 +40,9 @@ function Add() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={age}
-            label="Age"
-            onChange={handleChange}
+            value={category}
+            label="Category"
+            onChange={(e) => setCategory(e.target.value)}
           >
             <MenuItem value={10}>Ten</MenuItem>
             <MenuItem value={20}>Twenty</MenuItem>
@@ -46,9 +56,9 @@ function Add() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={age}
-            label="Age"
-            onChange={handleChange}
+            value={author}
+            label="Author"
+            onChange={(e) => setAuthor(e.target.value)}
           >
             <MenuItem value={10}>Ten</MenuItem>
             <MenuItem value={20}>Twenty</MenuItem>
@@ -62,17 +72,20 @@ function Add() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={age}
-            label="Age"
-            onChange={handleChange}
+            value={publisher}
+            label="Publisher"
+            onChange={(e) => setPublisher(e.target.value)}
           >
             <MenuItem value={10}>Ten</MenuItem>
             <MenuItem value={20}>Twenty</MenuItem>
             <MenuItem value={30}>Thirty</MenuItem>
           </Select>
+          <Button sx={{ minWidth: 120, marginTop: 3 }} onClick={handleSubmit}>
+            Add a new book
+          </Button>
         </FormControl>
       </Box>
-    </>
+    </Box>
   );
 }
 

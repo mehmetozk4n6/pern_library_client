@@ -1,101 +1,66 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Switch from '@mui/material/Switch';
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import FormControl from "@mui/material/FormControl";
+import { Input } from "@mui/material";
 
-export default function MaxWidthDialog() {
-  const [open, setOpen] = React.useState(false);
-  const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState('sm');
-
+function AddCategory() {
+  const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
+    setCategory("");
   };
-
-  const handleMaxWidthChange = (event) => {
-    setMaxWidth(
-      // @ts-expect-error autofill of arbitrary value is not handled.
-      event.target.value,
-    );
-  };
-
-  const handleFullWidthChange = (event) => {
-    setFullWidth(event.target.value);
+  const [category, setCategory] = useState("");
+  const handleClick = () => {
+    console.log(category);
+    setCategory("");
   };
 
   return (
-    <React.Fragment>
+    <Box>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Open max-width dialog
+        Add Category
       </Button>
       <Dialog
-        fullWidth={fullWidth}
-        maxWidth={maxWidth}
+        fullWidth={true}
+        maxWidth={"sm"}
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle>Optional sizes</DialogTitle>
+        <DialogTitle>You can add new unique category</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            You can set my maximum width and whether to adapt or not.
-          </DialogContentText>
           <Box
             noValidate
             component="form"
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              m: 'auto',
-              width: 'fit-content',
+              display: "flex",
+              flexDirection: "column",
+              m: "auto",
+              width: "fit-content",
             }}
           >
             <FormControl sx={{ mt: 2, minWidth: 120 }}>
-              <InputLabel htmlFor="max-width">maxWidth</InputLabel>
-              <Select
-                autoFocus
-                value={maxWidth}
-                onChange={handleMaxWidthChange}
-                label="maxWidth"
-                inputProps={{
-                  name: 'max-width',
-                  id: 'max-width',
-                }}
-              >
-                <MenuItem value={false as any}>false</MenuItem>
-                <MenuItem value="xs">xs</MenuItem>
-                <MenuItem value="sm">sm</MenuItem>
-                <MenuItem value="md">md</MenuItem>
-                <MenuItem value="lg">lg</MenuItem>
-                <MenuItem value="xl">xl</MenuItem>
-              </Select>
+              <Input
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+              <Button onClick={handleClick}>Add</Button>
             </FormControl>
-            <FormControlLabel
-              sx={{ mt: 1 }}
-              control={
-                <Switch checked={fullWidth} onChange={handleFullWidthChange} />
-              }
-              label="Full width"
-            />
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+    </Box>
   );
 }
+
+export default AddCategory;
