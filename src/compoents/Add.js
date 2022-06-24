@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Input } from "@mui/material";
+import Add_nav from "./Add_nav";
 
 function Add() {
   const [age, setAge] = React.useState("");
@@ -16,11 +17,12 @@ function Add() {
 
   return (
     <>
+      <Add_nav />
       <TextField
         id="standard-basic"
         label="Standard"
         variant="standard"
-        sx={{ width: 100 }}
+        sx={{ width: "100%" }}
       />
       <Box sx={{ minWidth: 120, marginTop: 3 }}>
         <FormControl fullWidth>
