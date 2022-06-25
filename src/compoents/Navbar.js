@@ -7,11 +7,14 @@ import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSearchText } from "../redux/librarySlice";
 
 function Navbar() {
+  const dispatch = useDispatch();
   const [searchVal, setSearchVal] = useState("");
   const handleClick = () => {
-    console.log(searchVal);
+    dispatch(setSearchText(searchVal));
   };
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between" }}>

@@ -1,10 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getBooks = createAsyncThunk("library/getBooks", async (page) => {
-  const res = await axios(`http://localhost:5000/books?page=${page}`);
-  return res.data.data;
-});
+export const getBooks = createAsyncThunk(
+  "library/getBooks",
+  async ({ page, searchText, order }) => {
+    let filterOrder = order ? "DESC" : "ASC";
+    const res = await axios(
+      `http://localhost:5000/books?page=${page}&searchtext=${searchText}&order=${filterOrder}`
+    );
+    return res.data.data;
+  }
+);
 export const getAuthors = createAsyncThunk("library/getAuthors", async () => {
   const res = await axios(`http://localhost:5000/authors`);
   return res.data.data.authors;
@@ -87,10 +93,19 @@ export const librarySlice = createSlice({
     authors: [],
     categories: [],
     publishers: [],
+    searchText: "",
+    order: false,
     status: "idle",
     error: "",
   },
-  reducers: {},
+  reducers: {
+    setSearchText: (state, action) => {
+      state.searchText = action.payload;
+    },
+    setOrder: (state, action) => {
+      state.order = !state.order;
+    },
+  },
   extraReducers: {
     [getBooks.pending]: (state, action) => {
       state.status = "loading";
@@ -136,7 +151,9 @@ export const selectCategories = (state) => state.library.categories;
 export const selectPublishers = (state) => state.library.publishers;
 export const selectStatus = (state) => state.library.status;
 export const selectError = (state) => state.library.error;
+export const selectSearchText = (state) => state.library.searchText;
+export const selectOrder = (state) => state.library.order;
 
-// export const {} = librarySlice.actions;
+export const { setSearchText, setOrder } = librarySlice.actions;
 
 export default librarySlice.reducer;

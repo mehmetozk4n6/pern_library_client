@@ -1,9 +1,15 @@
 import Box from "@mui/material/Box";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getBooks, selectBooks, selectStatus } from "../redux/librarySlice";
+import {
+  getBooks,
+  selectBooks,
+  selectSearchText,
+  selectStatus,
+} from "../redux/librarySlice";
 import DataTable from "react-data-table-component";
 import { Button } from "@mui/material";
+import { selectOrder } from "../redux/librarySlice";
 
 function Table() {
   const dispatch = useDispatch();
@@ -12,10 +18,12 @@ function Table() {
   const pages = useSelector(selectBooks).pages;
   const currentPage = useSelector(selectBooks).current;
   const totalBooks = useSelector(selectBooks).totalBooks;
+  const searchText = useSelector(selectSearchText);
+  const order = useSelector(selectOrder);
 
   useEffect(() => {
-    dispatch(getBooks(1));
-  }, [dispatch]);
+    dispatch(getBooks({ page: 1, searchText, order }));
+  }, [dispatch, searchText, order]);
 
   const columns = [
     {
@@ -56,7 +64,7 @@ function Table() {
   );
 
   const handlePageChange = (page) => {
-    dispatch(getBooks(page));
+    dispatch(getBooks({ page, searchText, order }));
   };
 
   const paginationComponentOptions = {

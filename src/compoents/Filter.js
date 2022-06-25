@@ -1,8 +1,18 @@
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectOrder, setOrder } from "../redux/librarySlice";
 
 function Filter() {
-  return <Box sx={{ width: "25%", margin: 0, padding: "auto" }}>Filter</Box>;
+  const dispatch = useDispatch();
+  const order = useSelector(selectOrder);
+  return (
+    <Box sx={{ width: "25%", margin: 0, padding: "auto" }}>
+      <Button onClick={() => dispatch(setOrder())}>
+        {order ? "ASC" : "DESC"}
+      </Button>
+    </Box>
+  );
 }
 
 export default Filter;
