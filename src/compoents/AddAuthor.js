@@ -8,30 +8,47 @@ import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import { Input } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addCategory, getCategories } from "../redux/librarySlice";
+import {
+  addAuthor,
+  addCategory,
+  getAuthors,
+  getCategories,
+} from "../redux/librarySlice";
 
-function AddCategory() {
+function AddAuthor() {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
+  const [first_name, setFirst_name] = useState("");
+  const [last_name, setLast_name] = useState("");
+  const [location, setLocation] = useState("");
   const dispatch = useDispatch();
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
-    setName("");
+    setFirst_name("");
+    setLast_name("");
+    setLocation("");
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setOpen(false);
-    dispatch(addCategory(name)).then(() => dispatch(getCategories()));
-    setName("");
+    dispatch(
+      addAuthor({
+        first_name,
+        last_name,
+        location,
+      })
+    ).then(() => dispatch(getAuthors()));
+    setFirst_name("");
+    setLast_name("");
+    setLocation("");
   };
 
   return (
     <Box>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add Category
+        Add Author
       </Button>
       <Dialog
         fullWidth={true}
@@ -39,7 +56,7 @@ function AddCategory() {
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle>You can add new unique category</DialogTitle>
+        <DialogTitle>You can add new unique author</DialogTitle>
         <DialogContent>
           <Box
             noValidate
@@ -53,12 +70,27 @@ function AddCategory() {
           >
             <FormControl sx={{ mt: 2, minWidth: 120 }}>
               <Input
-                placeholder="Category"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                placeholder="First Name"
+                value={first_name}
+                onChange={(e) => setFirst_name(e.target.value)}
               />
-              <Button onClick={handleClick}>Add</Button>
             </FormControl>
+            <FormControl sx={{ mt: 2, minWidth: 120 }}>
+              <Input
+                placeholder="Last Name"
+                value={last_name}
+                onChange={(e) => setLast_name(e.target.value)}
+              />
+            </FormControl>
+            <FormControl sx={{ mt: 2, minWidth: 120 }}>
+              <Input
+                placeholder="Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </FormControl>
+
+            <Button onClick={handleClick}>Add</Button>
           </Box>
         </DialogContent>
         <DialogActions>
@@ -69,4 +101,4 @@ function AddCategory() {
   );
 }
 
-export default AddCategory;
+export default AddAuthor;

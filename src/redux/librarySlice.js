@@ -7,23 +7,79 @@ export const getBooks = createAsyncThunk("library/getBooks", async (page) => {
 });
 export const getAuthors = createAsyncThunk("library/getAuthors", async () => {
   const res = await axios(`http://localhost:5000/authors`);
-  return res.data.data;
+  return res.data.data.authors;
 });
 export const getCategories = createAsyncThunk(
   "library/getCategories",
   async () => {
     const res = await axios(`http://localhost:5000/categories`);
-    return res.data.data;
+    return res.data.data.categories;
   }
 );
 export const getPublishers = createAsyncThunk(
   "library/getPublishers",
   async () => {
     const res = await axios(`http://localhost:5000/publishers`);
+    return res.data.data.publishers;
+  }
+);
+export const addBook = createAsyncThunk(
+  "library/addBook",
+  async ({ title, description, categoryId, publisherId, authorId }) => {
+    const res = await axios({
+      method: "post",
+      url: "http://localhost:5000/books",
+      data: {
+        title: title === "" ? undefined : title,
+        description: description === "" ? undefined : description,
+        categoryId: categoryId === "" ? undefined : categoryId,
+        publisherId: publisherId === "" ? undefined : publisherId,
+        authorId: authorId === "" ? undefined : authorId,
+      },
+    });
     return res.data.data;
   }
 );
+export const addCategory = createAsyncThunk(
+  "library/addCategory",
+  async (name) => {
+    const res = await axios({
+      method: "post",
+      url: "http://localhost:5000/categories",
+      data: {
+        name,
+      },
+    });
+    return res.data.data;
+  }
+);
+export const addPublisher = createAsyncThunk(
+  "library/addAuthor",
+  async ({ company, description }) => {
+    const res = await axios({
+      method: "post",
+      url: "http://localhost:5000/publishers",
+      data: { company, description },
+    });
+    return res.data.data;
+  }
+);
+export const addAuthor = createAsyncThunk(
+  "library/addAuthor",
+  async ({ first_name, last_name, location }) => {
+    const res = await axios({
+      method: "post",
+      url: "http://localhost:5000/authors",
+      data: {
+        first_name,
+        last_name,
+        location,
+      },
+    });
 
+    return res.data.data;
+  }
+);
 export const librarySlice = createSlice({
   name: "library",
   initialState: {

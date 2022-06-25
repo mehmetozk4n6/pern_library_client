@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBooks, selectBooks, selectStatus } from "../redux/librarySlice";
 import DataTable from "react-data-table-component";
+import { Button } from "@mui/material";
 
 function Table() {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ function Table() {
           (author?.first_name &&
             `${author?.first_name} ${author?.last_name}`) ||
           null,
-        publisher: publisher,
+        publisher,
       };
     }
   );

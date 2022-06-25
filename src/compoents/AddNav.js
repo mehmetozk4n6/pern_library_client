@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { BsArrowLeft } from "react-icons/bs";
 import AddCategory from "./AddCategory";
@@ -13,8 +12,6 @@ function AddNav() {
           Return to List Page
         </Link>
       </Box>
-
-      <AddCategory />
     </Box>
   );
 }

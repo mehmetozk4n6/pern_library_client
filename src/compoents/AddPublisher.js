@@ -8,30 +8,35 @@ import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import { Input } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addCategory, getCategories } from "../redux/librarySlice";
+import { addPublisher, getPublishers } from "../redux/librarySlice";
 
-function AddCategory() {
+function AddPublisher() {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [description, setDescription] = useState("");
   const dispatch = useDispatch();
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
-    setName("");
+    setCompany("");
+    setDescription("");
   };
 
   const handleClick = () => {
     setOpen(false);
-    dispatch(addCategory(name)).then(() => dispatch(getCategories()));
-    setName("");
+    dispatch(addPublisher({ company, description })).then(() =>
+      dispatch(getPublishers())
+    );
+    setCompany("");
+    setDescription("");
   };
 
   return (
     <Box>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add Category
+        Add Publisher
       </Button>
       <Dialog
         fullWidth={true}
@@ -39,7 +44,7 @@ function AddCategory() {
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle>You can add new unique category</DialogTitle>
+        <DialogTitle>You can add new unique publisher</DialogTitle>
         <DialogContent>
           <Box
             noValidate
@@ -53,12 +58,19 @@ function AddCategory() {
           >
             <FormControl sx={{ mt: 2, minWidth: 120 }}>
               <Input
-                placeholder="Category"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                placeholder="Publisher"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
               />
-              <Button onClick={handleClick}>Add</Button>
             </FormControl>
+            <FormControl sx={{ mt: 2, minWidth: 120 }}>
+              <Input
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </FormControl>
+            <Button onClick={handleClick}>Add</Button>
           </Box>
         </DialogContent>
         <DialogActions>
@@ -69,4 +81,4 @@ function AddCategory() {
   );
 }
 
-export default AddCategory;
+export default AddPublisher;
