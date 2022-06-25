@@ -8,7 +8,13 @@ function Table() {
   const dispatch = useDispatch();
   const loading = useSelector(selectStatus) === "loading" ? true : false;
   const books = useSelector(selectBooks).books;
-  const totalRows = useSelector(selectBooks).totalBooks;
+  const pages = useSelector(selectBooks).pages;
+  const currentPage = useSelector(selectBooks).current;
+  const totalBooks = useSelector(selectBooks).totalBooks;
+
+  useEffect(() => {
+    dispatch(getBooks(1));
+  }, [dispatch]);
 
   const columns = [
     {
@@ -21,7 +27,7 @@ function Table() {
     },
     {
       name: "category",
-      selector: (row) => row.category.name,
+      selector: (row) => row.category?.name || null,
     },
     {
       name: "author",
@@ -29,7 +35,7 @@ function Table() {
     },
     {
       name: "publisher",
-      selector: (row) => row.publisher.company,
+      selector: (row) => row.publisher?.company || null,
     },
   ];
 
@@ -39,25 +45,36 @@ function Table() {
         title,
         description,
         category: category,
-        author: `${author.first_name} ${author.last_name}`,
+        author:
+          (author?.first_name &&
+            `${author?.first_name} ${author?.last_name}`) ||
+          null,
         publisher: publisher,
       };
     }
   );
 
-  useEffect(() => {
-    dispatch(getBooks());
-  }, [dispatch]);
+  const handlePageChange = (page) => {
+    dispatch(getBooks(page));
+  };
+
+  const paginationComponentOptions = {
+    noRowsPerPage: true,
+  };
 
   return (
     <Box sx={{ width: "75%", margin: 0, padding: "auto" }}>
       <DataTable
+        paginationComponentOptions={paginationComponentOptions}
         columns={columns}
         data={data}
         progressPending={loading}
+        responsive
         pagination
         paginationServer
-        paginationTotalRows={totalRows}
+        paginationTotalRows={totalBooks}
+        paginationPerPage={5}
+        onChangePage={handlePageChange}
       />
     </Box>
   );
